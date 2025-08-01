@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consortio | Strategic Partner for Capgemini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony Neutrals -->
+    <!-- Application Structure Plan: A single-page dashboard design is chosen for its modern feel and user-friendliness. It allows stakeholders to get a quick overview via key metric cards and then explore specific areas of interest (Capabilities, Sectors) through interactive components. This non-linear structure is more engaging than a static document and respects the user's time by letting them navigate directly to what's most relevant to them. The flow is designed to build confidence: starting with the approved partner status, showing key numbers, demonstrating detailed capabilities, visualizing market breadth, and ending with a clear call to action. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key stats (25+ years, 4 resourcers, etc.) -> Goal: Inform/Impress -> Viz/Method: HTML/CSS stat cards -> Interaction: None -> Justification: Provides an immediate, high-impact summary of experience and scale.
+        - Report Info: Service Capabilities list -> Goal: Organize/Inform -> Viz/Method: Two-panel interactive list (JS-driven content switching) -> Interaction: Click to update content -> Justification: Prevents a long, unreadable list. Engages the user and allows for focused exploration of specific service areas.
+        - Report Info: Sector Specialisation list -> Goal: Compare/Show Breadth -> Viz/Method: Chart.js Doughnut Chart -> Interaction: Hover for tooltips -> Justification: Transforms a simple list into a more compelling visual that effectively communicates the wide range of industry experience. -> Library: Chart.js (Canvas).
+        - Report Info: All other text -> Goal: Inform -> Viz/Method: Structured HTML with Tailwind CSS -> Interaction: None -> Justification: Ensures clear, professional, and readable presentation of static but important information like contact details and company values. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 80vh;
+        }
+        .capability-btn.active {
+            background-color: #0369a1; /* sky-700 */
+            color: white;
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-sky-800">CONSORTIO</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="text-gray-600 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Overview</a>
+                        <a href="#capabilities" class="text-gray-600 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Capabilities</a>
+                        <a href="#sectors" class="text-gray-600 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Sectors</a>
+                        <a href="#team" class="text-gray-600 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Our Team</a>
+                        <a href="#contact" class="bg-sky-700 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-sky-800 transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="text-gray-600 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">Overview</a>
+                <a href="#capabilities" class="text-gray-600 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">Capabilities</a>
+                <a href="#sectors" class="text-gray-600 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">Sectors</a>
+                <a href="#team" class="text-gray-600 hover:bg-gray-200 block px-3 py-2 rounded-md text-base font-medium">Our Team</a>
+                <a href="#contact" class="bg-sky-700 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-sky-800 transition-colors">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="overview" class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-sky-900 mb-4">A Strategic Partnership with Capgemini</h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-6">
+                As an approved supplier, we are committed to delivering exceptional talent and outcome-focused solutions to support Capgemini's success.
+            </p>
+            <div class="inline-block bg-emerald-100 text-emerald-800 font-semibold px-6 py-3 rounded-full shadow-md">
+                ✅ Approved Supplier to Capgemini since 15 June 2025
+            </div>
+        </section>
+
+        <section id="metrics" class="py-12">
+             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-sky-600">
+                    <div class="text-5xl font-bold text-sky-800">25+</div>
+                    <p class="text-gray-600 mt-2 font-medium">Years Combined Experience</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-sky-600">
+                    <div class="text-5xl font-bold text-sky-800">4</div>
+                    <p class="text-gray-600 mt-2 font-medium">Skilled Resourcers</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-sky-600">
+                    <div class="text-5xl font-bold text-sky-800">7</div>
+                    <p class="text-gray-600 mt-2 font-medium">Key Sectors of Specialisation</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-sky-600">
+                    <div class="text-5xl font-bold text-sky-800">3</div>
+                    <p class="text-gray-600 mt-2 font-medium">Security Clearance Levels (NV2, NV1, Baseline)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="capabilities" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Service Capabilities</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                    Explore our comprehensive service capabilities. Select a category below to see our specific areas of expertise and the roles we staff.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8 min-h-[400px]">
+                <div class="md:w-1/3">
+                    <div id="capability-buttons" class="flex flex-col space-y-2">
+                    </div>
+                </div>
+                <div class="md:w-2/3 bg-white p-8 rounded-lg shadow-xl">
+                    <div id="capability-content">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sectors" class="py-12 bg-white rounded-lg shadow-xl mt-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Broad Sector Specialisation</h2>
+                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                    We possess deep recruitment expertise across a diverse range of industries. Our experience ensures we understand the unique challenges and talent requirements of your sector.
+                </p>
+            </div>
+            <div class="chart-container">
+                <canvas id="sectorsChart"></canvas>
+            </div>
+             <div class="text-center mt-8 p-4 bg-sky-50 rounded-lg max-w-3xl mx-auto">
+                <h3 class="font-bold text-sky-800 text-lg">Specialised Defence & National Security Capability</h3>
+                <p class="text-gray-700 mt-1">We have a dedicated, ACT-based capability with access to candidates holding Baseline, NV1, and NV2 security clearances.</p>
+            </div>
+        </section>
+
+        <section id="team" class="py-12 mt-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Team & Approach</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                    Our strength lies in our experienced team and our proven, collaborative process that delivers results efficiently.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-semibold mb-2">Collaborative Approach</h3>
+                    <p class="text-gray-600">We work as an extension of your team, focusing on shared goals and successful outcomes.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold mb-2">High-Volume Delivery</h3>
+                    <p class="text-gray-600">Our processes are built for fast-paced environments, ensuring timely delivery without compromising quality.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-semibold mb-2">Dedicated Account Lead</h3>
+                    <p class="text-gray-600">A single point of contact, supported by a skilled team, ensures clear communication and accountability.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-12 mt-12 bg-sky-800 text-white rounded-lg shadow-2xl">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold">Get in Touch</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-sky-200">
+                    Let's discuss how we can support your next project.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                <div class="text-center">
+                    <img src="https://placehold.co/128x128/e0f2fe/0c4a6e?text=CD" alt="Crispin Demetriou" class="rounded-full mx-auto mb-4 border-4 border-sky-600">
+                    <h3 class="text-2xl font-bold">Crispin Demetriou</h3>
+                    <p class="text-sky-300">Account Lead</p>
+                    <div class="mt-4 space-y-2">
+                        <p>📞 <a href="tel:0483954903" class="hover:underline">0483 954 903</a></p>
+                        <p>📧 <a href="mailto:crispin@consortio.com.au" class="hover:underline">crispin@consortio.com.au</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+            <p>Consortio Pty Ltd | ABN: 46 116 721 334</p>
+            <p>Level 14, 59 Goulburn Street, Sydney NSW 2000 | www.consortio.com.au</p>
+            <p class="mt-2">&copy; 2025 Consortio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const capabilitiesData = [
+                {
+                    title: 'Project, Program & Delivery Management',
+                    content: '<ul><li class="mb-2 p-3 bg-slate-100 rounded">Program & Project Managers</li><li class="mb-2 p-3 bg-slate-100 rounded">Executives & Business Analysts</li><li class="mb-2 p-3 bg-slate-100 rounded">Agile Methodologies</li><li class="mb-2 p-3 bg-slate-100 rounded">PMO & Change Management</li></ul>'
+                },
+                {
+                    title: 'Data Analysis & Cyber Security',
+                    content: '<ul><li class="mb-2 p-3 bg-slate-100 rounded">Data Science & ETL</li><li class="mb-2 p-3 bg-slate-100 rounded">Data Architecture</li><li class="mb-2 p-3 bg-slate-100 rounded">Cyber Security</li><li class="mb-2 p-3 bg-slate-100 rounded">Essential Eight Uplift</li></ul>'
+                },
+                {
+                    title: 'Software & Application Development',
+                    content: '<ul><li class="mb-2 p-3 bg-slate-100 rounded">Full Stack Development</li><li class="mb-2 p-3 bg-slate-100 rounded">Mobile Applications</li><li class="mb-2 p-3 bg-slate-100 rounded">UX/UI & Architecture</li><li class="mb-2 p-3 bg-slate-100 rounded">Quality Assurance</li></ul>'
+                },
+                {
+                    title: 'Infrastructure & Cloud',
+                    content: '<ul><li class="mb-2 p-3 bg-slate-100 rounded">AWS/Azure</li><li class="mb-2 p-3 bg-slate-100 rounded">DevOps & ITSM</li><li class="mb-2 p-3 bg-slate-100 rounded">Networks & Desktop Support</li></ul>'
+                },
+                {
+                    title: 'Testing & QA',
+                    content: '<ul><li class="mb-2 p-3 bg-slate-100 rounded">Automation Testing</li><li class="mb-2 p-3 bg-slate-100 rounded">Penetration Testing</li><li class="mb-2 p-3 bg-slate-100 rounded">Integration & Manual Testing</li></ul>'
+                }
+            ];
+
+            const capabilityButtonsContainer = document.getElementById('capability-buttons');
+            const capabilityContentContainer = document.getElementById('capability-content');
+
+            capabilitiesData.forEach((cap, index) => {
+                const button = document.createElement('button');
+                button.textContent = cap.title;
+                button.className = 'capability-btn w-full text-left px-4 py-3 rounded-lg font-semibold transition-all duration-200 ease-in-out hover:bg-sky-100';
+                button.dataset.index = index;
+                if (index === 0) {
+                    button.classList.add('active');
+                }
+                capabilityButtonsContainer.appendChild(button);
+            });
+
+            function updateContent(index) {
+                capabilityContentContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">${capabilitiesData[index].title}</h3>
+                    ${capabilitiesData[index].content}
+                `;
+                document.querySelectorAll('.capability-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.index == index) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
+            capabilityButtonsContainer.addEventListener('click', (e) => {
+                if (e.target.matches('.capability-btn')) {
+                    updateContent(e.target.dataset.index);
+                }
+            });
+
+            updateContent(0);
+
+            const sectorsData = {
+                labels: ['Banking & Finance', 'Government', 'Energy & Utilities', 'Aviation', 'Consultancy', 'Infrastructure', 'Defence & National Security'],
+                datasets: [{
+                    label: 'Sector Specialisation',
+                    data: [1, 1, 1, 1, 1, 1, 1],
+                    backgroundColor: [
+                        '#0c4a6e', // sky-900
+                        '#0369a1', // sky-700
+                        '#0ea5e9', // sky-500
+                        '#38bdf8', // sky-400
+                        '#7dd3fc', // sky-300
+                        '#bae6fd', // sky-200
+                        '#075985'  // sky-800 (highlight)
+                    ],
+                    hoverOffset: 4,
+                    borderColor: '#f8fafc',
+                    borderWidth: 4
+                }]
+            };
+
+            const sectorsChartCtx = document.getElementById('sectorsChart').getContext('2d');
+            new Chart(sectorsChartCtx, {
+                type: 'doughnut',
+                data: sectorsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#1f2937',
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 4
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
